@@ -8,5 +8,8 @@ Using this data we can see the timeseries history of when a specific term (event
 To scrape all data from a twitter feed, the script can be run via the command line: python3 scrapeTweets.py -u
 where the flag '-u' will tell the script to disregard any stored data on the disk and instead glean all the tweets from the feed now - thus giving the most up to date collection of tweets.
 
-The name of the input and output files can be specified by the user also via the command line: python3 scrapeTweets.py -i <inputfile> -o <outputfile>
-By default the script will run with the same name for the input and output file "timeline_prototype.jsonl"
+The a custom input file can be specified by the user also via the command line: python3 scrapeTweets.py -i <\inputfile>
+
+the cmd line flags -u and -i are mutually exclusive - you may only generate new data or analyse existing data but you cannot do both in the same execution cycle.
+
+By default (no flags) the script will look for the file "timeline_json.jsonl", and analyse the data within it.

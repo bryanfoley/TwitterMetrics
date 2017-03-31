@@ -10,8 +10,7 @@ import jsonlines
 import pandas
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+from plotter import plotter
 
 api = tweepy.API(auth)
 
@@ -64,15 +63,15 @@ def get_date_time_data(tweets,container):
 def bucket_data(data):
     #For now, this is using hardcoded values
     #Make this more general
-    bucketA = []
-    bucketB = []
+    bucketA = [] #This will hold the datetime object for Coffee (datetime.date,datetime.time)
+    bucketB = [] #This will hold the same for Fruit
     for item in data:
         if item[0] == '30908':#Coffee
             bucketA.append(item[1])
         elif item[0] == '2344F3':#Fruit
             bucketB.append(item[1])
         else:
-            pass
+            pass #Discard terms which we are not looking for
     return bucketA,bucketB
 
 def get_plot_data(data):
@@ -88,48 +87,11 @@ def get_plot_data(data):
     return xA,yA,xB,yB,xC,xD
 
 
-def plot_data(data):
-    f1 = plt.figure(1)
-    plt.subplot(211)
-    plt.xlabel('Day of year')
-    plt.ylabel('Time of day')
-    plt.title('Coffee')
-    plt.grid(True)
-    plt.plot(data[0],data[1],'ro')
-    plt.axis(['May 20 2016','April 2017','23:59:59','00:00:00'])
-    plt.subplot(212)
-    plt.xlabel('Day of year')
-    plt.ylabel('Time of day')
-    plt.title('Fruit')
-    plt.grid(True)
-    plt.plot(data[2],data[3],'g^')
-    plt.axis(['May 20 2016','April 2017','23:59:59','00:00:00'])
-    f1.show()
-
-    f2 = plt.figure(2)
-    plt.subplot(211)
-    plt.xlabel('Hour of day')
-    plt.ylabel('Probability')
-    plt.title('Coffee drinking')
-    plt.grid(True)
-    plt.hist(data[4],24,normed=1,facecolor='r')
-    plt.axis([0,24,0,0.3])
-    plt.subplot(212)
-    plt.xlabel('Hour of day')
-    plt.ylabel('Probability')
-    plt.title('Fruit eating')
-    plt.grid(True)
-    plt.hist(data[5],24,normed=1,facecolor='g')
-    plt.axis([0,24,0,0.3])
-    f2.show()
-
-    input()
-
 def do_processing(data):
-    #bucketA,bucketB = bucket_data(data)
     data = bucket_data(data)
     data = get_plot_data(data)
-    plot_data(data)
+    plots = plotter(data)
+    plots.generate_plots()
 
 def main(argv):
     #Default inputfile that the script searches for

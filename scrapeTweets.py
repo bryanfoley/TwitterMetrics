@@ -25,7 +25,7 @@ def get_tweets(outputfile):
     try:
         jsonlines.open(outputfile,mode='w')
     except FileNotFoundError:
-        print("Could not open %s",outputfile," to write the data")
+        print("Could not open %s",inputfile," to write the data")
         sys.exit(1)
     with jsonlines.open(outputfile,mode='w') as f:
         for tweet in tweepy.Cursor(api.user_timeline).items():
@@ -132,27 +132,28 @@ def do_processing(data):
     plot_data(data)
 
 def main(argv):
-    inputfile = 'timeline_prototype.jsonl'
-    outputfile = 'timeline_prototype.jsonl'
+    #Default inputfile that the script searches for
+    inputfile = 'timeline_data.jsonl'
     try:
-       opts, args = getopt.getopt(argv,"hui:o:",["ifile=","ofile="])
+       opts, args = getopt.getopt(argv,"hui:",["ifile="])
     except getopt.GetoptError:
-       print( 'test.py -i <inputfile> -o <outputfile>')
+       print( 'scrapeTweets.py -u (refresh data) -i <custom inputfile name>')
        sys.exit(2)
     for opt, arg in opts:
        if opt == '-h':
-          print ('scrapeTweets.py -u (refresh data) -i <inputfile> -o <outputfile>')
+          print('scrapeTweets.py -u (refresh data) -i <custom inputfile name>')
+          print('options -u and -i are mutually exclusive!')
           sys.exit()
        elif opt in ("-i", "--ifile"):
           inputfile = arg
-       elif opt in ("-o", "--ofile"):
-          outputfile = arg
+          print("Reading data from custom file",inputfile)
        elif opt == '-u':
           print("Scraping feed data...")
-          get_tweets(outputfile)
-    print('Input file is ', inputfile)
-    print('Output file is ', outputfile)
-  
+          get_tweets(inputfile)
+          print("Data written to",inputfile)
+    if(len(opts)==0):
+        print("Reading data from",inputfile)
+
     data = load_tweets(inputfile)
     do_processing(data)
 

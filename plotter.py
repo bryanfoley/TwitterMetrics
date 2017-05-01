@@ -43,14 +43,14 @@ class dataPlotter():
         plt.title('Coffee')
         plt.grid(True)
         plt.plot(self.xA,self.yA,'ro')
-        plt.axis(['May 20 2016','April 2017','23:59:59','00:00:00'])
+        plt.axis(['May 20 2016','May 2017','23:59:59','00:00:00'])
         plt.subplot(212)
         plt.xlabel('Day of year')
         plt.ylabel('Time of day')
         plt.title('Fruit')
         plt.grid(True)
         plt.plot(self.xB,self.yB,'g^')
-        plt.axis(['May 20 2016','April 2017','23:59:59','00:00:00'])
+        plt.axis(['May 20 2016','May 2017','23:59:59','00:00:00'])
 
     def plot_histogram(self):
         #Histogram plot

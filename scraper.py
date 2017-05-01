@@ -21,7 +21,7 @@ class dataScraper():
         self.tweets = []
 
     def scrape(self):
-        if self.update=='True':
+        if self.update==True:
             self.update_data()
             self.load_data()
         else:

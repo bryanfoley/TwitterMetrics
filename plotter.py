@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from matplotlib.pyplot import show, draw
 import pandas
+import time
 
 class dataPlotter():
     #This class will contain specific plot arguments
@@ -15,14 +17,15 @@ class dataPlotter():
         self.yB=[]
         self.xC=[]
         self.xD=[]
+        self.year = time.strftime("%Y")
+        self.month = time.strftime("%B")
+        self.day = time.strftime("%d")
+        self.endRange = self.month + " " + self.day + " " + self.year
 
     def plot(self):
         self.get_plot_data()
         self.plot_scatter()
         self.plot_histogram()
-        self.f1.show()
-        self.f2.show()
-        input()
 
     def get_plot_data(self):
         self.xA = [d[0] for d in self.data[0]]
@@ -43,14 +46,16 @@ class dataPlotter():
         plt.title('Coffee')
         plt.grid(True)
         plt.plot(self.xA,self.yA,'ro')
-        plt.axis(['June 15 2016','July 2017','23:59:59','00:00:00'])
+        plt.axis(['June 15 2016',self.endRange,'23:59:59','00:00:00'])
         plt.subplot(212)
         plt.xlabel('Day of year')
         plt.ylabel('Time of day')
         plt.title('Fruit')
         plt.grid(True)
         plt.plot(self.xB,self.yB,'g^')
-        plt.axis(['June 15 2016','July 2017','23:59:59','00:00:00'])
+        plt.axis(['June 15 2016',self.endRange,'23:59:59','00:00:00'])
+        #show(block=False)
+        plt.savefig(self.year+self.month+self.day+"_scatter.png", bbox_inches='tight')
 
     def plot_histogram(self):
         #Histogram plot
@@ -69,3 +74,5 @@ class dataPlotter():
         plt.grid(True)
         plt.hist(self.xD,24,normed=1,facecolor='g')
         plt.axis([0,24,0,0.3])
+        #show(block=False)
+        plt.savefig(self.year+self.month+self.day+"_histogram.png",bbox_inches='tight')
